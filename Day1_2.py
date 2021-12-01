@@ -1,16 +1,17 @@
 import sys
 
+# Counter for the answer
 counter = 0
 
 # Input file
-infile = open("Day1_input.txt", 'r')
+infile = open("Day1_input.txt", "r")
 
 # Array to store entries from file
 entries = []
 
 # Read file entries into array
-for line in infile.readlines():
-    entries.append(int(line.strip()))
+for line in infile:
+    entries.append(int(line))
 infile.close()
 
 # Initialise previous
