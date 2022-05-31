@@ -18,18 +18,19 @@ for l in infile:
 for line in line_array:
 	lstack = []
 	total_points = 0
+	corrupt = False
 	for c in line:
 		if c in open_brackets:
 			lstack.append(c)
 		elif c in closed_brackets:
 			if open_brackets[closed_brackets.index(c)] != lstack.pop():
-				total_points += points_table[closed_brackets.index(c)]
+				corrupt = True
 				continue
-	for s in reversed(lstack):
-		print(lstack.pop())
-		total_points *= 5
-		total_points += open_brackets.index(s)+1
-		line_scores.append(total_points)
+	if not corrupt:
+		for s in reversed(lstack):
+			total_points *= 5
+			total_points += open_brackets.index(s)+1
+		points_table.append(total_points)
 
-line_scores.sort()
-print(line_scores[len(line_scores/2)])
+points_table.sort()
+print(points_table[int((len(points_table)-1)/2)])
