@@ -7,7 +7,7 @@ coords = []
 path_array = []
 
 # Populate path array
-infile = open("Day12_input1.txt","r")
+infile = open("Day12_input.txt","r")
 for l in infile:
     line_data = l.strip()
     line_array = line_data.split('-')
@@ -23,7 +23,7 @@ def array_deep_copy(array_in):
 # Create array of paths
 # cave_in is index of current coordinates
 # coord_index = 0 or 1 for current cave
-def trace_path(cave_in, coord_index, current_path, travelled, second_pass_done):
+def trace_path(cave_in, coord_index, current_path, travelled, second_visit_done):
     global path_count
 
     current_cave = coords[cave_in][coord_index]
@@ -31,8 +31,8 @@ def trace_path(cave_in, coord_index, current_path, travelled, second_pass_done):
     current_path.append(current_cave)
 
     new_travelled = array_deep_copy(travelled)
-
-    second_pass_done_update = second_pass_done
+    if new_cave.islower():
+        new_travelled.append(new_cave)
 
     if new_cave == "end":
         current_path.append("end")
@@ -41,19 +41,11 @@ def trace_path(cave_in, coord_index, current_path, travelled, second_pass_done):
         for c in coords:
             for ci in c:
                 if ci == new_cave:
-                    new_path = array_deep_copy(current_path)
-                    if new_cave.isupper():
-                        trace_path(coords.index(c), c.index(ci), new_path, new_travelled, second_pass_done_update)
-                    else:
-                        new_travelled.append(current_cave)
-                        if new_travelled.count(new_cave) == 2:
-                                second_pass_done_update = True
-                        if second_pass_done_update == True:
-                            if new_travelled.count(new_cave) < 1:
-                                trace_path(coords.index(c), c.index(ci), new_path, new_travelled, True)
-                        else:
-                            if new_travelled.count(new_cave) <= 2:
-                                trace_path(coords.index(c), c.index(ci), new_path, new_travelled, second_pass_done_update)
+                    if travelled.count(current_cave) == 2:
+                        second_visit_done = True
+                    if (travelled.count(new_cave) == 0 and second_visit_done) or (travelled.count(new_cave) <= 1 and not second_visit_done) or new_cave.isupper():
+                        new_path = array_deep_copy(current_path)
+                        trace_path(coords.index(c), c.index(ci), new_path, new_travelled, second_visit_done)
             
 # Find the starting points
 for c in coords:
