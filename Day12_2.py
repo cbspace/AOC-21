@@ -49,14 +49,11 @@ def trace_path(cave_in, coord_index, current_path, travelled, second_visit_done)
             
 # Find the starting points
 for c in coords:
-    if c[0] == "start":
-        current_path = []
-        travelled = []
-        trace_path(coords.index(c), 0, current_path, travelled, False)
-    elif c[1] == "start":
-        current_path = []
-        travelled = []
-        trace_path(coords.index(c), 1, current_path, travelled, False)
+    for ci in c:
+        if ci == "start":
+            current_path = []
+            travelled = []
+            trace_path(coords.index(c), c.index(ci), current_path, travelled, False)
 
 for a in path_array:
     print(a)
